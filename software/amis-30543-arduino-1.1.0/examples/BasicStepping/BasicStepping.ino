@@ -17,6 +17,8 @@ information about how to connect the driver:
 
 #include <SPI.h>
 #include <AMIS30543.h>
+#define SPEEDDELAY 1000
+
 
 const uint8_t amisDirPin = 2;
 const uint8_t amisStepPin = 3;
@@ -43,17 +45,18 @@ void setup()
 
   // Set the current limit.  You should change the number here to
   // an appropriate value for your particular system.
-  stepper.setCurrentMilliamps(132);
-
+  stepper.setCurrentMilliamps(600);
+  
   // Set the number of microsteps that correspond to one full step.
-  stepper.setStepMode(32);
+  stepper.setStepMode(16);
 
   // Enable the motor outputs.
   stepper.enableDriver();
+
+  
 }
 
-void loop()
-{
+void loop(){
   // Step in the default direction 1000 times.
   setDirection(0);
   for (unsigned int x = 0; x < 1000; x++)
@@ -73,6 +76,7 @@ void loop()
 
   // Wait for 300 ms.
   delay(300);
+
 }
 
 // Sends a pulse on the NXT/STEP pin to tell the driver to take
@@ -90,7 +94,7 @@ void step()
   // you decrease the delay, the stepper motor will go fast, but
   // there is a limit to how fast it can go before it starts
   // missing steps.
-  delayMicroseconds(2000);
+  delayMicroseconds(SPEEDDELAY);
 }
 
 // Writes a high or low value to the direction pin to specify
