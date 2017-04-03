@@ -4,4 +4,4 @@ import random
 seed = random.random()
 print(seed)
 
-urllib.request.urlretrieve("http://192.168.0.6/capture?t="+str(seed), "local.jpg")
+urllib.request.urlretrieve("http://10.146.13.107/capture?t="+str(seed), "test.jpg")
