@@ -1,8 +1,8 @@
-/*  
- *   BFPD_complete.ino
+/*
+ *   turn_180.ino
  *   Master MCU code for controlling the following components
  *   + stepper motor
- *   
+ *
  *   adapted from amis-30543 examples
  *   http://pololu.github.io/amis-30543-arduino/
  *   Copyright (c) 2016-2017 Daniel Hull
@@ -13,7 +13,7 @@
 #include <AMIS30543.h>
 AMIS30543 stepper;
 
-// set higher for slower, set lower for faster (msec) 
+// set higher for slower, set lower for faster (msec)
 #define SPEEDDELAY 1000
 
 // current in milliamps, DO NOT GO ABOVE 1000
@@ -26,8 +26,9 @@ AMIS30543 stepper;
 const uint8_t amisDirPin = 2;
 const uint8_t amisStepPin = 3;
 const uint8_t amisSlaveSelect = 4;
-int rotations = 0; 
-int step_count = (DEGREES/1.8)*MICROSTEP_COUNT; 
+
+int rotations = 0;
+int step_count = (DEGREES/1.8)*MICROSTEP_COUNT;
 
 void setup()
 {
@@ -44,7 +45,7 @@ void setup()
 
   // Sets current limit
   stepper.setCurrentMilliamps(CURRENT_MAX);
-  
+
   // Set the number of microsteps that correspond to one full step.
   stepper.setStepMode(MICROSTEP_COUNT);
 
