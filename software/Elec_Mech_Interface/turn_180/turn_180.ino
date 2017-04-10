@@ -13,22 +13,24 @@
 #include <AMIS30543.h>
 AMIS30543 stepper;
 
-// set higher for slower, set lower for faster (msec)
-#define SPEEDDELAY 1000
-
 // current in milliamps, DO NOT GO ABOVE 1000
 #define CURRENT_MAX 200
 
 // 4, 8, 16, 32, lower value will make smoother
 #define DEGREES 180
-#define MICROSTEP_COUNT 1
+#define MICROSTEP_COUNT 32
+int step_count = (DEGREES/1.8)*MICROSTEP_COUNT;
+
+// set higher for slower, set lower for faster (msec)
+int speed_delay = 7500/step_count;
 
 const uint8_t amisDirPin = 2;
 const uint8_t amisStepPin = 3;
 const uint8_t amisSlaveSelect = 4;
 
 int rotations = 0;
-int step_count = (DEGREES/1.8)*MICROSTEP_COUNT;
+int iter = 0;
+
 
 void setup()
 {
@@ -54,28 +56,44 @@ void setup()
 }
 
 void loop(){
-  if (rotations >= 1){
-    setDirection(0);
-    step(step_count);
+  if (iter < 1){
+    stepForward(step_count);
+    delay(300);
+    stepBackward(step_count);
+    delay(300);
   }
-  delay(300);
-
+  
 }
 
 // Sends a pulse on the NXT/STEP pin to tell the driver to take
 // one step, and also delays to control the speed of the motor.
-void step(int num_steps)
-{
+void stepForward(int num_steps){
+  setDirection(0);
   for (unsigned int x = 0; x < num_steps; x++){
   // The NXT/STEP minimum high pulse width is 2 microseconds.
   digitalWrite(amisStepPin, HIGH);
   delayMicroseconds(3);
   digitalWrite(amisStepPin, LOW);
   delayMicroseconds(3);
-  delayMicroseconds(SPEEDDELAY);
+  delay(speed_delay);
   }
-  rotations += 1;
+  ++iter;
+  ++rotations;
 }
+
+void stepBackward(int num_steps){
+  setDirection(1);
+  for (unsigned int x = 0; x < num_steps; x++){
+  // The NXT/STEP minimum high pulse width is 2 microseconds.
+  digitalWrite(amisStepPin, HIGH);
+  delayMicroseconds(3);
+  digitalWrite(amisStepPin, LOW);
+  delayMicroseconds(3);
+  delay(speed_delay);
+  }
+  --rotations;
+}
+
 
 // Writes a high or low value to the direction pin to specify
 // what direction to turn the motor.

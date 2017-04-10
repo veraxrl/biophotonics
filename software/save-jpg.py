@@ -10,7 +10,7 @@ def hello():
 def capture(path):
     seed = random.random()
     # print(seed)
-    urllib.request.urlretrieve("http://10.146.13.107/capture?t=" + str(seed),
+    urllib.request.urlretrieve("http://10.146.20.117/capture?t=" + str(seed),
                                path)
 
 
