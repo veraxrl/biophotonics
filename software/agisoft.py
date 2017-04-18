@@ -1,6 +1,6 @@
 import PhotoScan
 
-path = "C:/Users/Ruolan Xu/Desktop/BME 436/testing"
+path = "C:/Users/Ruolan Xu/Desktop/BME 436/testing/res.ply"
 
 
 def reconstruct():
@@ -28,24 +28,13 @@ def reconstruct():
                      interpolation=PhotoScan.EnabledInterpolation)
     chunk.buildUV(mapping=PhotoScan.GenericMapping)
     chunk.buildTexture(blending=PhotoScan.MosaicBlending, size=4096)
-    doc.save(path + "/doc1.psz")
-    # chunk.exportModel(path,
-    #                    binary=True,
-    #                    precision=6,
-    #                    texture_format='jpg',
-    #                    texture=True,
-    #                    normals=True,
-    #                    colors=True,
-    #                    cameras=True,
-    #                    format='ply')
 
-    # chunk.exportPoints(path,
-    #                    dense=True,
-    #                    binary=True,
-    #                    precision=6,
-    #                    normals=True,
-    #                    colors=True,
-    #                    format='ply')
+    chunk.exportPoints(path,
+                       binary=True,
+                       precision=6,
+                       normals=True,
+                       colors=True,
+                       format=PhotoScan.PointsFormatPLY)
 
 
 if __name__ == "__main__":
