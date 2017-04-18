@@ -14,23 +14,26 @@
 AMIS30543 stepper;
 
 // current in milliamps, DO NOT GO ABOVE 1000
-#define CURRENT_MAX 200
+#define CURRENT_MAX 800
 
 // 4, 8, 16, 32, lower value will make smoother
-#define DEGREES 180
-#define MICROSTEP_COUNT 32
-int step_count = (DEGREES/1.8)*MICROSTEP_COUNT;
+#define TOTAL_DEGREES 180
+#define MICROSTEP_COUNT 8
+#define IMAGE_COUNT 15
+#define MOVEMENT_TIME 1000
 
-// set higher for slower, set lower for faster (msec)
-int speed_delay = 7500/step_count;
+int step_degrees = TOTAL_DEGREES/IMAGE_COUNT; // degrees per image
+int step_count = (step_degrees/1.8)*MICROSTEP_COUNT; // steps per image
+int step_delay = MOVEMENT_TIME/step_count;
 
-const uint8_t amisDirPin = 2;
-const uint8_t amisStepPin = 3;
-const uint8_t amisSlaveSelect = 4;
+// set higher for higher resolution (based on vera's table set lower for faster (msec)
+#define TRANSFER_DELAY 5000
 
-int rotations = 0;
-int iter = 0;
+const uint8_t amisDirPin = D0;
+const uint8_t amisStepPin = D1;
+const uint8_t amisSlaveSelect = D8;
 
+int num_images = 0;
 
 void setup()
 {
@@ -56,52 +59,41 @@ void setup()
 }
 
 void loop(){
-  if (iter < 1){
-    stepForward(step_count);
-    delay(300);
-    stepBackward(step_count);
-    delay(300);
-  }
-  
+    //capture image
+    if (num_images < IMAGE_COUNT){
+     step(step_count, 0);
+     delay(TRANSFER_DELAY);
+    }
+    ++num_images;
+    
 }
 
 // Sends a pulse on the NXT/STEP pin to tell the driver to take
 // one step, and also delays to control the speed of the motor.
-void stepForward(int num_steps){
-  setDirection(0);
+void step(int num_steps, bool direction){
+  /*
+   * int num_steps = number of steps to send to driver
+   * int direction (NEEDS TO BE A ZERO or a ONE, TRUE OR FALSE) 
+   */
+  
+  setDirection(direction);
   for (unsigned int x = 0; x < num_steps; x++){
-  // The NXT/STEP minimum high pulse width is 2 microseconds.
   digitalWrite(amisStepPin, HIGH);
-  delayMicroseconds(3);
+  delayMicroseconds(3); // The NXT/STEP minimum high pulse width is 2 microseconds.
   digitalWrite(amisStepPin, LOW);
   delayMicroseconds(3);
-  delay(speed_delay);
+  delay(step_delay);
   }
-  ++iter;
-  ++rotations;
 }
 
-void stepBackward(int num_steps){
-  setDirection(1);
-  for (unsigned int x = 0; x < num_steps; x++){
-  // The NXT/STEP minimum high pulse width is 2 microseconds.
-  digitalWrite(amisStepPin, HIGH);
-  delayMicroseconds(3);
-  digitalWrite(amisStepPin, LOW);
-  delayMicroseconds(3);
-  delay(speed_delay);
-  }
-  --rotations;
-}
-
-
-// Writes a high or low value to the direction pin to specify
-// what direction to turn the motor.
 void setDirection(bool dir)
 {
-  // The NXT/STEP pin must not change for at least 0.5
-  // microseconds before and after changing the DIR pin.
+  /*
+   * dir Writes a high or low value to the direction pin to specify what direction to turn the motor.
+   */
   delayMicroseconds(1);
   digitalWrite(amisDirPin, dir);
   delayMicroseconds(1);
+  // The NXT/STEP pin must not change for at least 0.5
+  // microseconds before and after changing the DIR pin.
 }
