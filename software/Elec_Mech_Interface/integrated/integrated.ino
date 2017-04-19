@@ -142,32 +142,12 @@ int camera_status = 1;
 
 
 void loop(){
-  /*When the camera has come to the last stop*/
-  if (camera_status == 2) {
-    step(steps_to_go_home, 1); //steps back to start position
-    meas_time = 0;
-  }
-
-  /*When the camera stops and ready for capture */
-  else if (camera_status == 1) {
-    server.handleClient();
-    if (millis() - meas_time > TRANSFER_DELAY) {
-      camera_status = 0;
-      meas_time = millis();
-    }
-  }
-
-  /*When the camera is done with capture and ready to move to next stage*/
-  else {
-    step(step_count, 0);
-    if (images_taken == IMAGE_COUNT) {
-      camera_status = 2;
-    }
-    else {
-      camera_status = 1;
-      meas_time = millis();
-      images_taken++;
-    }
+  int start_time = millis();
+  server.handleClient();
+  // Picture Captured
+  if (millis() - start_time > 3000) {
+    // Move motor here
+    step(step_count,0);
   }
 
 }
