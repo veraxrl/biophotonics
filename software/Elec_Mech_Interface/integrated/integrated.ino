@@ -23,16 +23,18 @@
 #define IMAGE_COUNT 15
 #define MOVEMENT_TIME 1000
 #define MICROSTEP_COUNT 16
-#define TRANSFER_DELAY 10000
 
 int step_degrees = TOTAL_DEGREES/IMAGE_COUNT; // degrees per image
 int step_count = (step_degrees/1.8)*MICROSTEP_COUNT; // steps per image
 int step_delay = MOVEMENT_TIME/step_count;
-int steps_to_go_home = (TOTAL_DEGREES/1.8)*MICROSTEP_COUNT;
 
 const uint16_t dir_pin = D0;
 const uint16_t step_pin = D1;
 const uint16_t sleep_pin = D2;
+const uint16_t ms1_pin = D3;
+const uint16_t ms2_pin = D4;
+const uint16_t ms3_pin = D5;
+
 
 // set GPIO16 as the slave select :
 const int CS = 16;
@@ -121,15 +123,18 @@ void setup() {
   pinMode(step_pin, OUTPUT);
   pinMode(dir_pin, OUTPUT);
   pinMode(sleep_pin, OUTPUT);
+  pinMode(ms1_pin, OUTPUT);
+  pinMode(ms2_pin, OUTPUT);
+  pinMode(ms3_pin, OUTPUT);
 
   digitalWrite(step_pin, LOW);
   digitalWrite(dir_pin, LOW);
   digitalWrite(sleep_pin, LOW);
 
+  setStep(MICROSTEP_COUNT);
+
   delay(1);
-
 }
-
 
 // Variables related to state machine
 int meas_time = 0;
@@ -182,6 +187,31 @@ void setDirection(bool dir)
   delayMicroseconds(1);
   // The NXT/STEP pin must not change for at least 0.5
   // microseconds before and after changing the DIR pin.
+}
+
+void setStep(int microsteps){
+  switch (microsteps){
+    case 16:
+      digitalWrite(ms1_pin, HIGH);
+      digitalWrite(ms2_pin, HIGH);
+      digitalWrite(ms3_pin, HIGH);
+    case 8:
+      digitalWrite(ms1_pin, HIGH);
+      digitalWrite(ms2_pin, HIGH);
+      digitalWrite(ms3_pin, LOW);
+    case 4:
+      digitalWrite(ms1_pin, LOW);
+      digitalWrite(ms2_pin, HIGH);
+      digitalWrite(ms3_pin, LOW);
+    case 2:
+      digitalWrite(ms1_pin, HIGH);
+      digitalWrite(ms2_pin, LOW);
+      digitalWrite(ms3_pin, LOW);
+    case 1:
+      digitalWrite(ms1_pin, LOW);
+      digitalWrite(ms2_pin, LOW);
+      digitalWrite(ms3_pin, LOW);
+  }
 }
 
 
