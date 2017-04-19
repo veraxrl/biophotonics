@@ -18,25 +18,21 @@
 #include "memorysaver.h"
 
 #include <SPI.h>
-#include <AMIS30543.h>
 
-#define CURRENT_MAX 800 // current in milliamps, DO NOT GO ABOVE 1000
-
-#define IMAGE_COUNT 15
 #define TOTAL_DEGREES 180
-#define MICROSTEP_COUNT 8 // 4, 8, 16, 32, lower value will make smoother
-#define TRANSFER_DELAY 5000 // adjustable based on time for transfer
+#define IMAGE_COUNT 15
 #define MOVEMENT_TIME 1000
+#define MICROSTEP_COUNT 16
+#define TRANSFER_DELAY 10000
 
 int step_degrees = TOTAL_DEGREES/IMAGE_COUNT; // degrees per image
 int step_count = (step_degrees/1.8)*MICROSTEP_COUNT; // steps per image
 int step_delay = MOVEMENT_TIME/step_count;
 int steps_to_go_home = (TOTAL_DEGREES/1.8)*MICROSTEP_COUNT;
 
-const uint8_t amisDirPin = D0;
-const uint8_t amisStepPin = D1;
-const uint8_t amisSlaveSelect = D8;
-
+const uint16_t dir_pin = D0;
+const uint16_t step_pin = D1;
+const uint16_t sleep_pin = D2;
 
 // set GPIO16 as the slave select :
 const int CS = 16;
@@ -48,7 +44,6 @@ const char* password = "TC8715D27E252"; // Put your PASSWORD here
 
 ESP8266WebServer server(80);
 ArduCAM myCAM(OV5642, CS);
-AMIS30543 stepper;
 
 void setup() {
   uint8_t vid, pid;
@@ -63,26 +58,7 @@ void setup() {
 
   // set the CS as an output:
   pinMode(CS, OUTPUT);
-  
-  // Step motor Setup: SPI.begin() already
-  stepper.init(amisSlaveSelect);
-  digitalWrite(amisStepPin, LOW);
-  pinMode(amisStepPin, OUTPUT);
-  digitalWrite(amisDirPin, LOW);
-  pinMode(amisDirPin, OUTPUT);
-  delay(1);
 
-  // resets driver
-  stepper.resetSettings();
-
-  // Sets current limit
-  stepper.setCurrentMilliamps(CURRENT_MAX);
-
-  // Set the number of microsteps that correspond to one full step.
-  stepper.setStepMode(MICROSTEP_COUNT);
-
-  // Enable the motor outputs.
-  stepper.enableDriver();
   // initialize SPI:
   SPI.begin();
   SPI.setFrequency(4000000); //4MHz
@@ -110,7 +86,7 @@ void setup() {
   myCAM.set_format(JPEG);
    myCAM.InitCAM();
    myCAM.write_reg(ARDUCHIP_TIM, VSYNC_LEVEL_MASK);   //VSYNC is active HIGH
-   myCAM.OV5642_set_JPEG_size(OV5642_2592x1944);
+   myCAM.OV5642_set_JPEG_size(OV5642_1600x1200);
    delay(1000);
   if(!strcmp(ssid,"SSID")){
     Serial.println("Please set your SSID");
@@ -141,6 +117,16 @@ void setup() {
   server.onNotFound(handleNotFound);
   server.begin();
   Serial.println("Server started");
+
+  pinMode(step_pin, OUTPUT);
+  pinMode(dir_pin, OUTPUT);
+  pinMode(sleep_pin, OUTPUT);
+
+  digitalWrite(step_pin, LOW);
+  digitalWrite(dir_pin, LOW);
+  digitalWrite(sleep_pin, LOW);
+
+  delay(1);
 
 }
 
@@ -186,31 +172,33 @@ void loop(){
 
 }
 
+// Sends a pulse on the NXT/STEP pin to tell the driver to take
+// one step, and also delays to control the speed of the motor.
 void step(int num_steps, bool direction){
   /*
-   * steps based on pulses to driver, step delay set above for speed of motor
    * int num_steps = number of steps to send to driver
    * int direction (NEEDS TO BE A ZERO or a ONE, TRUE OR FALSE)
    */
-
+  digitalWrite(sleep_pin, HIGH);
   setDirection(direction);
   for (unsigned int x = 0; x < num_steps; x++){
-  digitalWrite(amisStepPin, HIGH);
-  delayMicroseconds(3); // The NXT/STEP minimum high PW is 2 microseconds.
-  digitalWrite(amisStepPin, LOW);
-  delayMicroseconds(3);
+  digitalWrite(step_pin, HIGH);
+  delayMicroseconds(10); // The NXT/STEP minimum high pulse width is 2 microseconds.
+  digitalWrite(step_pin, LOW);
+  delayMicroseconds(10);
   delay(step_delay);
   }
+  digitalWrite(sleep_pin, LOW);
+
 }
 
 void setDirection(bool dir)
 {
   /*
-   * sets direction of motor
-   * dir writes a DO to the DIR pin to specify what direction to turn the motor.
+   * dir Writes a high or low value to the direction pin to specify what direction to turn the motor.
    */
   delayMicroseconds(1);
-  digitalWrite(amisDirPin, dir);
+  digitalWrite(dir_pin, dir);
   delayMicroseconds(1);
   // The NXT/STEP pin must not change for at least 0.5
   // microseconds before and after changing the DIR pin.
