@@ -27,11 +27,11 @@ int step_count = (step_degrees/1.8)*MICROSTEP_COUNT; // steps per image
 int step_delay = MOVEMENT_TIME/step_count;
 
 // set higher for higher resolution (based on vera's table set lower for faster (msec)
-#define TRANSFER_DELAY 5000
+#define TRANSFER_DELAY 2000
 
-const uint8_t amisDirPin = D0;
-const uint8_t amisStepPin = D1;
-const uint8_t amisSlaveSelect = D8;
+const uint8_t amisDirPin = 2;
+const uint8_t amisStepPin = 3;
+const uint8_t amisSlaveSelect = 4;
 
 int num_images = 0;
 
@@ -64,8 +64,8 @@ void loop(){
      step(step_count, 0);
      delay(TRANSFER_DELAY);
     }
-    ++num_images;
-    
+    num_images++;
+
 }
 
 // Sends a pulse on the NXT/STEP pin to tell the driver to take
@@ -73,9 +73,9 @@ void loop(){
 void step(int num_steps, bool direction){
   /*
    * int num_steps = number of steps to send to driver
-   * int direction (NEEDS TO BE A ZERO or a ONE, TRUE OR FALSE) 
+   * int direction (NEEDS TO BE A ZERO or a ONE, TRUE OR FALSE)
    */
-  
+
   setDirection(direction);
   for (unsigned int x = 0; x < num_steps; x++){
   digitalWrite(amisStepPin, HIGH);
