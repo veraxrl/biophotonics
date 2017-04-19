@@ -10,21 +10,23 @@ def hello():
 def capture(path):
     seed = random.random()
     # print(seed)
-    urllib.request.urlretrieve("http://10.146.20.117/capture?t=" + str(seed),
+    urllib.request.urlretrieve("http://10.146.18.183/capture?t=" + str(seed),
                                path)
 
 
 if __name__ == "__main__":
-    n = 2
-    print("Start captureing " + str(n) + " 5MP images...")
+    n = 15
+    print("Start captureing " + str(n) + " 1MP images...")
 
     for x in range(0, n):
-        path = "Mon tests/img" + str(n) + ".jpg"
+        print("Start Capturing")
+        path = "fetch/img" + str(x) + ".jpg"
         capture(path)
+        print("Capturing Done.")
         end = time.clock()
         print("exe time: " + str(end))
 
         print("sleep for 5 secs")
         time.sleep(5)
 
-    print("Done")
+    print("All Done")
