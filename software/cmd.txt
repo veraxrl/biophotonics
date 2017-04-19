@@ -1,0 +1,15 @@
+** Run Camera Capture:
+python "save-jpg.py"
+
+save to C:\Users\Ruolan Xu\Desktop\BME 436\biophotonics\software\fetch folder
+
+
+**In PhotoScan Pro folder:
+need to change agisoft.py to fetch from designated folder
+
+"C:\Program Files\Agisoft\PhotoScan Pro\photoscan.exe" -r "agisoft.py"
+
+
+** In MATLAB/R2015b/bin:
+
+"C:\Program Files\MATLAB\R2015b\bin\matlab.exe" -nodisplay -nosplash -nodesktop -r "run('C:\Users\Ruolan Xu\Desktop\BME 436\biophotonics\software\test.m');"
