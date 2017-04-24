@@ -14,13 +14,13 @@
 AMIS30543 stepper;
 
 // current in milliamps, DO NOT GO ABOVE 1000
-#define CURRENT_MAX 800
+#define CURRENT_MAX 900
 
 // 4, 8, 16, 32, lower value will make smoother
 #define TOTAL_DEGREES 180
-#define MICROSTEP_COUNT 8
+#define MICROSTEP_COUNT 16
 #define IMAGE_COUNT 15
-#define MOVEMENT_TIME 1000
+#define MOVEMENT_TIME 3000
 
 int step_degrees = TOTAL_DEGREES/IMAGE_COUNT; // degrees per image
 int step_count = (step_degrees/1.8)*MICROSTEP_COUNT; // steps per image
@@ -61,7 +61,7 @@ void setup()
 void loop(){
     //capture image
     if (num_images < IMAGE_COUNT){
-     step(step_count, 0);
+     step(step_count, 1);
      delay(TRANSFER_DELAY);
     }
     ++num_images;

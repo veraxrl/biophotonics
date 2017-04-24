@@ -21,12 +21,15 @@
 
 #define TOTAL_DEGREES 180
 #define IMAGE_COUNT 15
-#define MOVEMENT_TIME 1000
+#define MOVEMENT_TIME 3000
 #define MICROSTEP_COUNT 16
+#define TRANSFER_DELAY 7000
 
 int step_degrees = TOTAL_DEGREES/IMAGE_COUNT; // degrees per image
 int step_count = (step_degrees/1.8)*MICROSTEP_COUNT; // steps per image
 int step_delay = MOVEMENT_TIME/step_count;
+
+// set higher for higher resolution (based on vera's table set lower for faster (msec)
 
 const uint16_t dir_pin = D0;
 const uint16_t step_pin = D1;
@@ -129,9 +132,11 @@ void setup() {
 
   digitalWrite(step_pin, LOW);
   digitalWrite(dir_pin, LOW);
-  digitalWrite(sleep_pin, LOW);
+  digitalWrite(sleep_pin, HIGH);
 
-  setStep(MICROSTEP_COUNT);
+  digitalWrite(ms1_pin, HIGH);
+  digitalWrite(ms2_pin, HIGH);
+  digitalWrite(ms3_pin, HIGH);
 
   delay(1);
 }
