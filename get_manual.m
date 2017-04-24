@@ -10,26 +10,20 @@ guiopen = 1;
 
 % visualize the mesh
 figure(1); clf;
-set(gcf, 'units', 'normalized', 'OuterPosition', [0.05 0.1 0.4 0.8])
+set(gcf, 'units', 'normalized', 'OuterPosition', [0.05 0.05 0.45 0.9])
 ptCloud = pcread(inmesh);
 pcshow(ptCloud,'MarkerSize',10);
 
 % create the measurement GUI
-glob = struct();
-
 gui = struct();
 gui.window = figure();
-set(gcf, 'units', 'normalized', 'OuterPosition', [0.55 0.1 0.4 0.8])
-mainlayout = uiextras.HBox('Parent', gui.window);
+set(gcf, 'units', 'normalized', 'OuterPosition', [0.5 0.05 0.45 0.9])
+mainlayout = uiextras.VBox('Parent', gui.window);
 
-a = uiextras.VBox('Parent',mainlayout);
-b = uiextras.VBox('Parent',mainlayout);
-
-a0 = uiextras.BoxPanel('Parent',a,'Title',' Frontal Picture');
-a0a = axes('Parent',a0,'OuterPosition',[0 0 1 1]);
+a = uiextras.BoxPanel('Parent',mainlayout);
+a0 = axes('Parent',a,'OuterPosition',[0 0 1 1]);
 
 fig = figure(3); clf;
-
 imshow(img1,'Border','tight');
 hold on
 [x, y] = circlepoints(peaks1(3));
@@ -41,64 +35,76 @@ plot(x+peaks3(1,1), y+peaks3(2,1), 'g-');
 plot(x+peaks3(1,2), y+peaks3(2,2), 'g-');
 scatter([TW_x1 TW_x2], TW_avgheight.*[1 1], 10, 'r','filled');
 clear('x','y');
-
 set(fig.CurrentAxes,'XTick',[],'YTick',[]);
-a0a = fig.CurrentAxes;
-set(a0a,'Parent',a0);
+a0 = fig.CurrentAxes;
+set(a0,'Parent',a);
 close(fig);
 
-a4 = uiextras.BoxPanel('Parent',a,'Title',' Input Coordinates for Point 1');
-a4a = uiextras.HBox('Parent',a4);
-a4a1 = uicontrol('Parent',a4a,'style','edit');
-a4a2 = uicontrol('Parent',a4a,'style','edit');
-a4a3 = uicontrol('Parent',a4a,'style','edit');
-a4a4 = uicontrol('Parent',a4a,'style','push','string','get scale','callback',@ongetscale);
-a4a5 = uicontrol('Parent',a4a,'style','edit','String',num2str(meshscale),'BackgroundColor','yellow');
-set(a4a,'Sizes',[-1 -1 -1 -1 -1]);
+b = uiextras.HBox('Parent',mainlayout);
+b1 = uiextras.VBox('Parent',b);
 
-a1 = uiextras.BoxPanel('Parent',a,'Title',' Input Coordinates for Point 1');
-a1a = uiextras.HBox('Parent',a1);
-a1a1 = uicontrol('Parent',a1a,'style','edit');
-a1a2 = uicontrol('Parent',a1a,'style','edit');
-a1a3 = uicontrol('Parent',a1a,'style','edit');
-set(a1a,'Sizes',[-1 -1 -1]);
+b1ax = uicontrol('Parent',b1,'style','edit','string','Scaling Points','BackgroundColor',[15 93 48]/255,'ForegroundColor',[1 1 1]);
+b1a1 = uiextras.HBox('Parent',b1);
+b1a1a = uicontrol('Parent',b1a1,'style','edit');
+b1a1b = uicontrol('Parent',b1a1,'style','edit');
+b1a1c = uicontrol('Parent',b1a1,'style','edit');
+b1a1d = uicontrol('Parent',b1a1,'style','push','string','get scale','callback',@ongetscale);
+b1a1e = uicontrol('Parent',b1a1,'style','edit','String',num2str(meshscale),'BackgroundColor',[173 223 173]/255,'ForegroundColor',[0 0 0]);
+set(b1a1,'Sizes',[-1 -1 -1 -1 -1]);
 
-a2 = uiextras.BoxPanel('Parent',a,'Title',' Input Coordinates for Point 2');
-a2a = uiextras.HBox('Parent',a2);
-a2a1 = uicontrol('Parent',a2a,'style','edit');
-a2a2 = uicontrol('Parent',a2a,'style','edit');
-a2a3 = uicontrol('Parent',a2a,'style','edit');
-set(a2a,'Sizes',[-1 -1 -1]);
+b1bx = uicontrol('Parent',b1,'style','edit','string','Input Point 1','BackgroundColor',[15 93 48]/255,'ForegroundColor',[1 1 1]);
+b1b = uiextras.HBox('Parent',b1);
+b1b1 = uicontrol('Parent',b1b,'style','edit');
+b1b2 = uicontrol('Parent',b1b,'style','edit');
+b1b3 = uicontrol('Parent',b1b,'style','edit');
+set(b1b,'Sizes',[-1 -1 -1]);
 
-a3 = uiextras.HBox('Parent',a);
-a3a = uicontrol('Parent',a3,'style','push','string','IPD','BackgroundColor','cyan','callback',@onconfirm1);
-a3b = uicontrol('Parent',a3,'style','push','string','Temple Width','BackgroundColor','cyan','callback',@onconfirm2);
-a3c = uicontrol('Parent',a3,'style','push','string','Nose Bridge','BackgroundColor','cyan','callback',@onconfirm3);
-a3d = uicontrol('Parent',a3,'style','push','string','Eye Size','BackgroundColor','cyan','callback',@onconfirm4);
-a3e = uicontrol('Parent',a3,'style','push','string','Custom','BackgroundColor','cyan','callback',@onconfirm5);
+b1cx = uicontrol('Parent',b1,'style','edit','string','Input Point 2','BackgroundColor',[15 93 48]/255,'ForegroundColor',[1 1 1]);
+b1c = uiextras.HBox('Parent',b1);
+b1c1 = uicontrol('Parent',b1c,'style','edit');
+b1c2 = uicontrol('Parent',b1c,'style','edit');
+b1c3 = uicontrol('Parent',b1c,'style','edit');
+set(b1c,'Sizes',[-1 -1 -1]);
 
-set(a,'Sizes',[-25 -3 -3 -3 -2]);
+b1d = uiextras.HBox('Parent',b1);
+b1d1 = uicontrol('Parent',b1d,'style','push','string','IPD','BackgroundColor',[173 223 173]/255,'ForegroundColor',[0 0 0],'callback',@onconfirm1);
+b1d2 = uicontrol('Parent',b1d,'style','push','string','Temple Width','BackgroundColor',[173 223 173]/255,'ForegroundColor',[0 0 0],'callback',@onconfirm2);
+b1d3 = uicontrol('Parent',b1d,'style','push','string','Nose Bridge','BackgroundColor',[173 223 173]/255,'ForegroundColor',[0 0 0],'callback',@onconfirm3);
+b1d4 = uicontrol('Parent',b1d,'style','push','string','Eye Size','BackgroundColor',[173 223 173]/255,'ForegroundColor',[0 0 0],'callback',@onconfirm4);
+b1d5 = uicontrol('Parent',b1d,'style','push','string','Custom','BackgroundColor',[173 223 173]/255,'ForegroundColor',[0 0 0],'callback',@onconfirm5);
 
-b1 = uicontrol('Parent',b,'style','list');
+b2 = uiextras.VBox('Parent',b);
+b2b = uicontrol('Parent',b2,'style','edit','string','Measurements','BackgroundColor',[15 93 48]/255,'ForegroundColor',[1 1 1]);
+b2a = uicontrol('Parent',b2,'style','list');
 temp = {['IPD: ' num2str(IPD)],['TW: ' num2str(TW)],'NBW: NA','ES: NA','Custom: NA'};
-b1string = 'Measurements';
+bstring = '';
 for i = 1:4
-	b1string = sprintf('%s \n%s',b1string, temp{i});
+	if i==1
+		bstring = sprintf('%s%s',bstring, temp{i});
+	else
+		bstring = sprintf('%s \n%s',bstring, temp{i});
+	end
 end
-set(b1,'string',b1string);
-b2 = uicontrol('Parent',b,'style','push','string','close GUI','BackgroundColor','red','callback',@onclose);
+set(b2a,'string',bstring);
+b2b = uicontrol('Parent',b2,'style','push','string','close GUI','BackgroundColor','red','callback',@onclose);
 
-set(b,'Sizes',[-30 -1]);
-set(mainlayout,'Sizes',[-4 -1]);
+set(mainlayout,'Sizes',[-7 -2]);
+set(b,'Sizes',[-4 -1]);
+set(b1,'Sizes',[-2 -3 -2 -3 -2 -3 -3]);
+set(b2,'Sizes',[-2 -13 -3]);
 
 status = 0; rcounter = 0;
 while guiopen==1
-	b1string = 'Measurements';
-	for i = 1:5
-		b1string = sprintf('%s \n%s',b1string, temp{i});
+	bstring = '';
+	for i = 1:4
+		if i==1
+			bstring = sprintf('%s%s',bstring, temp{i});
+		else
+			bstring = sprintf('%s \n%s',bstring, temp{i});
+		end
 	end
-	set(b1,'string',b1string);
-	set(a4a5,'string',num2str(meshscale));
+	set(b2a,'string',bstring);
+	set(b1a1e,'string',num2str(meshscale));
 	disp(status);
 
 	while status==0
@@ -113,12 +119,12 @@ close all
 function onconfirm1(varargin)
 % on point confirmation
 
-	x1(1) = str2num(get(a1a1,'string'));
-	x1(2) = str2num(get(a1a2,'string'));
-	x1(3) = str2num(get(a1a3,'string'));
-	x2(1) = str2num(get(a2a1,'string'));
-	x2(2) = str2num(get(a2a2,'string'));
-	x2(3) = str2num(get(a2a3,'string'));
+	x1(1) = str2num(get(b1b1,'string'));
+	x1(2) = str2num(get(b1b2,'string'));
+	x1(3) = str2num(get(b1b3,'string'));
+	x2(1) = str2num(get(b1c1,'string'));
+	x2(2) = str2num(get(b1c2,'string'));
+	x2(3) = str2num(get(b1c3,'string'));
 	rcounter = rcounter + 1;
 
 	temp{1} = ['IPD: ' num2str(meshscale*sqrt(sum((x1-x2).^2)))];
@@ -130,12 +136,12 @@ end
 function onconfirm2(varargin)
 % on point confirmation
 
-	x1(1) = str2num(get(a1a1,'string'));
-	x1(2) = str2num(get(a1a2,'string'));
-	x1(3) = str2num(get(a1a3,'string'));
-	x2(1) = str2num(get(a2a1,'string'));
-	x2(2) = str2num(get(a2a2,'string'));
-	x2(3) = str2num(get(a2a3,'string'));
+	x1(1) = str2num(get(b1b1,'string'));
+	x1(2) = str2num(get(b1b2,'string'));
+	x1(3) = str2num(get(b1b3,'string'));
+	x2(1) = str2num(get(b1c1,'string'));
+	x2(2) = str2num(get(b1c2,'string'));
+	x2(3) = str2num(get(b1c3,'string'));
 	rcounter = rcounter + 1;
 
 	temp{2} = ['TW: ' num2str(meshscale*sqrt(sum((x1-x2).^2)))];
@@ -147,12 +153,12 @@ end
 function onconfirm3(varargin)
 % on point confirmation
 
-	x1(1) = str2num(get(a1a1,'string'));
-	x1(2) = str2num(get(a1a2,'string'));
-	x1(3) = str2num(get(a1a3,'string'));
-	x2(1) = str2num(get(a2a1,'string'));
-	x2(2) = str2num(get(a2a2,'string'));
-	x2(3) = str2num(get(a2a3,'string'));
+	x1(1) = str2num(get(b1b1,'string'));
+	x1(2) = str2num(get(b1b2,'string'));
+	x1(3) = str2num(get(b1b3,'string'));
+	x2(1) = str2num(get(b1c1,'string'));
+	x2(2) = str2num(get(b1c2,'string'));
+	x2(3) = str2num(get(b1c3,'string'));
 	rcounter = rcounter + 1;
 
 	temp{3} = ['NBW: ' num2str(meshscale*sqrt(sum((x1-x2).^2)))];
@@ -164,12 +170,12 @@ end
 function onconfirm4(varargin)
 % on point confirmation
 
-	x1(1) = str2num(get(a1a1,'string'));
-	x1(2) = str2num(get(a1a2,'string'));
-	x1(3) = str2num(get(a1a3,'string'));
-	x2(1) = str2num(get(a2a1,'string'));
-	x2(2) = str2num(get(a2a2,'string'));
-	x2(3) = str2num(get(a2a3,'string'));
+	x1(1) = str2num(get(b1b1,'string'));
+	x1(2) = str2num(get(b1b2,'string'));
+	x1(3) = str2num(get(b1b3,'string'));
+	x2(1) = str2num(get(b1c1,'string'));
+	x2(2) = str2num(get(b1c2,'string'));
+	x2(3) = str2num(get(b1c3,'string'));
 	rcounter = rcounter + 1;
 
 	temp{4} = ['ES: ' num2str(meshscale*sqrt(sum((x1-x2).^2)))];
@@ -181,12 +187,12 @@ end
 function onconfirm5(varargin)
 % on point confirmation
 
-	x1(1) = str2num(get(a1a1,'string'));
-	x1(2) = str2num(get(a1a2,'string'));
-	x1(3) = str2num(get(a1a3,'string'));
-	x2(1) = str2num(get(a2a1,'string'));
-	x2(2) = str2num(get(a2a2,'string'));
-	x2(3) = str2num(get(a2a3,'string'));
+	x1(1) = str2num(get(b1b1,'string'));
+	x1(2) = str2num(get(b1b2,'string'));
+	x1(3) = str2num(get(b1b3,'string'));
+	x2(1) = str2num(get(b1c1,'string'));
+	x2(2) = str2num(get(b1c2,'string'));
+	x2(3) = str2num(get(b1c3,'string'));
 	rcounter = rcounter + 1;
 
 	temp{5} = ['Custom: ' num2str(meshscale*sqrt(sum((x1-x2).^2)))];
@@ -198,13 +204,13 @@ end
 function ongetscale(varargin)
 % on get scale
 
-	temp1 = strsplit(get(a4a1,'string'));
-	temp2 = strsplit(get(a4a2,'string'));
+	temp1 = strsplit(get(b1a1a,'string'));
+	temp2 = strsplit(get(b1a1b,'string'));
 	for i = 1:3
 		x1(i) = str2num(temp1{i});
 		x2(i) = str2num(temp2{i});
 	end
-	x3 = str2num(get(a4a3,'string'));
+	x3 = str2num(get(b1a1c,'string'));
 	meshscale = x3 / sqrt(sum((x1-x2).^2));
 	status = 1;
 end

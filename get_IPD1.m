@@ -8,17 +8,25 @@ imgscale = get_scale(img, realdist)
 
 % initialize Viola-Jones steps
 detect_eye1 = vision.CascadeObjectDetector('LeftEye');
-detect_eye1.MinSize = [80 80];
+detect_eye1.MinSize = [100 100];
 detect_eye1.MergeThreshold = 150;
 
 detect_eye2 = vision.CascadeObjectDetector('RightEye');
-detect_eye2.MinSize = [80 80];
+detect_eye2.MinSize = [100 100];
 detect_eye2.MergeThreshold = 150;
 
 % read image
 img1 = imread(img);
 boxes1 = step(detect_eye1, img1);
 boxes2 = step(detect_eye2, img1);
+
+% if can't detect eyes
+% if size(boxes1,1)<1
+% 	boxes1 = [500 500 100 100];
+% end
+% if size(boxes2,1)<1
+% 	boxes2 = [500 500 100 100];
+% end
 
 % create images with marked features
 IFaces1 = insertObjectAnnotation(img1, 'rectangle', boxes1(1,:), 'Left Eye');
@@ -69,6 +77,16 @@ radii = [10:1:40];
 h3 = circle_hough(e3, radii, 'same', 'normalise');
 peaks3 = circle_houghpeaks(h3, radii, 'nhoodxy', 15, 'nhoodr', 21, 'npeaks', 2, 'Threshold', 0.5*max(max(max(h3))));
 
+% if can't detect pupils
+% if size(peaks1,2)<1
+% 	peaks1 = [100; 100; 10];
+% end
+% if size(peaks2,2)<1
+% 	peaks2 = [100; 100; 10];
+% end
+% if size(peaks3,2)<1
+% 	peaks3 = [100; 100; 10];
+% end
 assignin('base','IFaces2',IFaces2);
 
 % figure(1);
@@ -85,9 +103,15 @@ assignin('base','IFaces2',IFaces2);
 imgout = 'test';
 
 % calculate IPD value
+assignin('base','peaks1',peaks1);
+assignin('base','peaks2',peaks2);
+assignin('base','boxes1',boxes1);
+assignin('base','boxes2',boxes2);
 
 IPD_x = (peaks1(1)+boxes1(1,1)) - (peaks2(1)+boxes2(1,1));
 IPD_y = (peaks1(2)+boxes1(1,2)) - (peaks2(2)+boxes2(1,2));
 IPD = imgscale*sqrt(IPD_x^2 + IPD_y^2);
+
+
 
 end
