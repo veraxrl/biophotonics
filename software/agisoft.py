@@ -1,25 +1,25 @@
 import PhotoScan
 
-path = "C:/Users/Ruolan Xu/Desktop/BME 436/testing/res.ply"
+path = "C:/Users/Ruolan Xu/Desktop/BME 436/biophotonics/software/res.ply"
 
 
 def reconstruct():
     doc = PhotoScan.app.document
     chunk = doc.addChunk()
-    chunk.addPhotos(["C:/Program Files/Agisoft/PhotoScan Pro/photos/000.jpeg",
-                     "C:/Program Files/Agisoft/PhotoScan Pro/photos/001.jpeg",
-                     "C:/Program Files/Agisoft/PhotoScan Pro/photos/002.jpeg",
-                     "C:/Program Files/Agisoft/PhotoScan Pro/photos/003.jpeg",
-                     "C:/Program Files/Agisoft/PhotoScan Pro/photos/004.jpeg",
-                     "C:/Program Files/Agisoft/PhotoScan Pro/photos/005.jpeg",
-                     "C:/Program Files/Agisoft/PhotoScan Pro/photos/006.jpeg",
-                     "C:/Program Files/Agisoft/PhotoScan Pro/photos/007.jpeg",
-                     "C:/Program Files/Agisoft/PhotoScan Pro/photos/008.jpeg",
-                     "C:/Program Files/Agisoft/PhotoScan Pro/photos/009.jpeg",
-                     "C:/Program Files/Agisoft/PhotoScan Pro/photos/010.jpeg",
-                     "C:/Program Files/Agisoft/PhotoScan Pro/photos/011.jpeg",
-                     "C:/Program Files/Agisoft/PhotoScan Pro/photos/012.jpeg",
-                     "C:/Program Files/Agisoft/PhotoScan Pro/photos/013.jpeg"])
+    chunk.addPhotos(["C:/Users/Ruolan Xu/Desktop/BME 436/biophotonics/software/fetch/img0.jpg",
+                     "C:/Users/Ruolan Xu/Desktop/BME 436/biophotonics/software/fetch/img1.jpg",
+                     "C:/Users/Ruolan Xu/Desktop/BME 436/biophotonics/software/fetch/img2.jpg",
+                     "C:/Users/Ruolan Xu/Desktop/BME 436/biophotonics/software/fetch/img3.jpg",
+                     "C:/Users/Ruolan Xu/Desktop/BME 436/biophotonics/software/fetch/img4.jpg",
+                     "C:/Users/Ruolan Xu/Desktop/BME 436/biophotonics/software/fetch/img5.jpg",
+                     "C:/Users/Ruolan Xu/Desktop/BME 436/biophotonics/software/fetch/img6.jpg",
+                     "C:/Users/Ruolan Xu/Desktop/BME 436/biophotonics/software/fetch/img7.jpg",
+                     "C:/Users/Ruolan Xu/Desktop/BME 436/biophotonics/software/fetch/img8.jpg",
+                     "C:/Users/Ruolan Xu/Desktop/BME 436/biophotonics/software/fetch/img9.jpg",
+                     "C:/Users/Ruolan Xu/Desktop/BME 436/biophotonics/software/fetch/img10.jpg",
+                     "C:/Users/Ruolan Xu/Desktop/BME 436/biophotonics/software/fetch/img11.jpg",
+                     "C:/Users/Ruolan Xu/Desktop/BME 436/biophotonics/software/fetch/img12.jpg",
+                     "C:/Users/Ruolan Xu/Desktop/BME 436/biophotonics/software/fetch/img13.jpg"])
     chunk.matchPhotos(accuracy=PhotoScan.MediumAccuracy,
                       preselection=PhotoScan.GenericPreselection)
     chunk.alignCameras()
