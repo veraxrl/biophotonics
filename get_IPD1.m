@@ -21,12 +21,12 @@ boxes1 = step(detect_eye1, img1);
 boxes2 = step(detect_eye2, img1);
 
 % if can't detect eyes
-% if size(boxes1,1)<1
-% 	boxes1 = [500 500 100 100];
-% end
-% if size(boxes2,1)<1
-% 	boxes2 = [500 500 100 100];
-% end
+if size(boxes1,1)<1
+	boxes1 = [500 500 100 100];
+end
+if size(boxes2,1)<1
+	boxes2 = [500 500 100 100];
+end
 
 % create images with marked features
 IFaces1 = insertObjectAnnotation(img1, 'rectangle', boxes1(1,:), 'Left Eye');
@@ -78,15 +78,15 @@ h3 = circle_hough(e3, radii, 'same', 'normalise');
 peaks3 = circle_houghpeaks(h3, radii, 'nhoodxy', 15, 'nhoodr', 21, 'npeaks', 2, 'Threshold', 0.5*max(max(max(h3))));
 
 % if can't detect pupils
-% if size(peaks1,2)<1
-% 	peaks1 = [100; 100; 10];
-% end
-% if size(peaks2,2)<1
-% 	peaks2 = [100; 100; 10];
-% end
-% if size(peaks3,2)<1
-% 	peaks3 = [100; 100; 10];
-% end
+if size(peaks1,2)<1
+	peaks1 = [100; 100; 10];
+end
+if size(peaks2,2)<1
+	peaks2 = [100; 100; 10];
+end
+if size(peaks3,2)<1
+	peaks3 = [100; 100; 10];
+end
 assignin('base','IFaces2',IFaces2);
 
 % figure(1);

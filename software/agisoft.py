@@ -1,25 +1,26 @@
 import PhotoScan
 
-path = "C:/Users/Daniel Hull/Documents/Projects/BFPD/software/res.ply"
+path = "C:/Users/Daniel Hull/Documents/Projects/BFPD/mesh.ply"
 
 
 def reconstruct():
     doc = PhotoScan.app.document
     chunk = doc.addChunk()
-    chunk.addPhotos(["C:/Users/Daniel Hull/Documents/Projects/BFPD/software/fetch/img0.jpg",
-                     "C:/Users/Daniel Hull/Documents/Projects/BFPD/software/fetch/img1.jpg",
-                     "C:/Users/Daniel Hull/Documents/Projects/BFPD/software/fetch/img2.jpg",
-                     "C:/Users/Daniel Hull/Documents/Projects/BFPD/software/fetch/img3.jpg",
-                     "C:/Users/Daniel Hull/Documents/Projects/BFPD/software/fetch/img4.jpg",
-                     "C:/Users/Daniel Hull/Documents/Projects/BFPD/software/fetch/img5.jpg",
-                     "C:/Users/Daniel Hull/Documents/Projects/BFPD/software/fetch/img6.jpg",
-                     "C:/Users/Daniel Hull/Documents/Projects/BFPD/software/fetch/img7.jpg",
-                     "C:/Users/Daniel Hull/Documents/Projects/BFPD/software/fetch/img8.jpg",
-                     "C:/Users/Daniel Hull/Documents/Projects/BFPD/software/fetch/img9.jpg",
-                     "C:/Users/Daniel Hull/Documents/Projects/BFPD/software/fetch/img10.jpg",
-                     "C:/Users/Daniel Hull/Documents/Projects/BFPD/software/fetch/img11.jpg",
-                     "C:/Users/Daniel Hull/Documents/Projects/BFPD/software/fetch/img12.jpg",
-                     "C:/Users/Daniel Hull/Documents/Projects/BFPD/software/fetch/img13.jpg"])
+    chunk.addPhotos(["C:/Users/Daniel Hull/AppData/Local/Programs/Python/Python36/fetch/img0.jpg",
+                     "C:/Users/Daniel Hull/AppData/Local/Programs/Python/Python36/fetch/img1.jpg",
+                     "C:/Users/Daniel Hull/AppData/Local/Programs/Python/Python36/fetch/img2.jpg",
+                     "C:/Users/Daniel Hull/AppData/Local/Programs/Python/Python36/fetch/img3.jpg",
+                     "C:/Users/Daniel Hull/AppData/Local/Programs/Python/Python36/fetch/img4.jpg",
+                     "C:/Users/Daniel Hull/AppData/Local/Programs/Python/Python36/fetch/img5.jpg",
+                     "C:/Users/Daniel Hull/AppData/Local/Programs/Python/Python36/fetch/img6.jpg",
+                     "C:/Users/Daniel Hull/AppData/Local/Programs/Python/Python36/fetch/img7.jpg",
+                     "C:/Users/Daniel Hull/AppData/Local/Programs/Python/Python36/fetch/img8.jpg",
+                     "C:/Users/Daniel Hull/AppData/Local/Programs/Python/Python36/fetch/img9.jpg",
+                     "C:/Users/Daniel Hull/AppData/Local/Programs/Python/Python36/fetch/img10.jpg",
+                     "C:/Users/Daniel Hull/AppData/Local/Programs/Python/Python36/fetch/img11.jpg",
+                     "C:/Users/Daniel Hull/AppData/Local/Programs/Python/Python36/fetch/img12.jpg",
+                     "C:/Users/Daniel Hull/AppData/Local/Programs/Python/Python36/fetch/img13.jpg",
+                     "C:/Users/Daniel Hull/AppData/Local/Programs/Python/Python36/fetch/img14.jpg"])
     chunk.matchPhotos(accuracy=PhotoScan.MediumAccuracy,
                       preselection=PhotoScan.GenericPreselection)
     chunk.alignCameras()

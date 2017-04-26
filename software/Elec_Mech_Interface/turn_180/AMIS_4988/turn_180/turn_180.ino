@@ -10,9 +10,9 @@
 
 #define TOTAL_DEGREES 180
 #define IMAGE_COUNT 15
-#define MOVEMENT_TIME 3000
+#define MOVEMENT_TIME 1000
 #define MICROSTEP_COUNT 16
-#define TRANSFER_DELAY 7000
+#define TRANSFER_DELAY 10000
 
 int step_degrees = TOTAL_DEGREES/IMAGE_COUNT; // degrees per image
 int step_count = (step_degrees/1.8)*MICROSTEP_COUNT; // steps per image
@@ -52,9 +52,12 @@ void setup()
 
 void loop(){
     //capture image
+    if (num_images < 15){
     step(step_count,0);
-    delay(TRANSFER_DELAY);    
+    delay(TRANSFER_DELAY);
+    ++num_images;
     }
+}
 
 // Sends a pulse on the NXT/STEP pin to tell the driver to take
 // one step, and also delays to control the speed of the motor.

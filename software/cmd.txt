@@ -1,6 +1,6 @@
 ** Run Camera Capture:
 
-python "save-jpg.py"
+"C:\Users\Daniel Hull\AppData\Local\Programs\Python\Python36\python.exe" "C:/Users/Daniel Hull/Documents/Projects/BFPD/software/save-jpg.py"
 
 save to C:\Users\Ruolan Xu\Desktop\BME 436\biophotonics\software\fetch folder
 
@@ -13,4 +13,4 @@ need to change agisoft.py to fetch from designated folder
 
 ** In MATLAB/R2015b/bin:
 
-"C:\Program Files\MATLAB\R2016b\bin\matlab.exe" -nodisplay -nosplash -nodesktop -r "run('C:\Users\Daniel Hull\Documents\MATLAB\matlab_start.m');"
+"C:\Program Files\MATLAB\R2016b\bin\matlab.exe" -nodisplay -nosplash -nodesktop -r "run('C:/Users/Daniel Hull/Documents/Projects/BFPD/matlab_start.m');"
